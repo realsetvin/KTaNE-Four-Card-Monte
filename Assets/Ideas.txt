@@ -1,0 +1,12 @@
+Ideas:
+
+- Bank Account:
+Calculate the value for the chip you pressed, 
+then go through some other calculations to figure out what your prize is.
+Lastly, deposit the money on the bank account.
+
+
+- Casino rules:
+Standard casino rules will apply.
+You cannot leave the casino until you have solved all casino modules. (Poker, blackjack, etc.)
+Also, you cannot enter/deal when the time isn't right.
