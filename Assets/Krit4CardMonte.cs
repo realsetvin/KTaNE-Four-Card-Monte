@@ -3068,43 +3068,56 @@ public class Krit4CardMonte : MonoBehaviour
         Debug.LogFormat("[Four-Card Monte {0}] Pressed \"Submit\"", ModuleID);
         Debug.LogFormat("[Four-Card Monte {0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
         Debug.LogFormat("[Four-Card Monte {0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
-        if (EnteredDollars == DesiredDollars)
+
+        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Entered dollars correct. Checking cents...", ModuleID);
-            if (EnteredCent1 == DesiredCent1)
+            if (EnteredDollars == DesiredDollars)
             {
-                if (EnteredCent2 == DesiredCent2)
+                Debug.LogFormat("[Four-Card Monte {0}] Entered dollars correct. Checking cents...", ModuleID);
+                if (EnteredCent1 == DesiredCent1)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Entered cents correct.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Winnings accepted and sent. Module solved.", ModuleID);
-                    TotalEarningsTicket.text = "$" + EnteredDollars.ToString() + "," + EnteredCent1.ToString() + EnteredCent2.ToString();
-                    CardNumberTicket.text = CardNumber;
-                    int RandomMessage = Random.Range(3, 5);
-                    VictoryMessage.text = VictoryMessages[RandomMessage - 1];
-                    StartCoroutine("CorrectPayment");
-                    StartCoroutine("TicketDispensing");
-                    TicketPrinting.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
-                    TicketPrinting.PlaySoundAtTransform("TicketPrinting", transform);
-                    GetComponent<KMBombModule>().HandlePass();
+                    if (EnteredCent2 == DesiredCent2)
+                    {
+                        Debug.LogFormat("[Four-Card Monte {0}] Entered cents correct.", ModuleID);
+                        Debug.LogFormat("[Four-Card Monte {0}] Winnings accepted and sent. Module solved.", ModuleID);
+                        TotalEarningsTicket.text = "$" + EnteredDollars.ToString() + "," + EnteredCent1.ToString() + EnteredCent2.ToString();
+                        CardNumberTicket.text = CardNumber;
+                        int RandomMessage = Random.Range(3, 5);
+                        VictoryMessage.text = VictoryMessages[RandomMessage - 1];
+                        StartCoroutine("CorrectPayment");
+                        StartCoroutine("TicketDispensing");
+                        TicketPrinting.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
+                        TicketPrinting.PlaySoundAtTransform("TicketPrinting", transform);
+                        GetComponent<KMBombModule>().HandlePass();
+                    }
+                    else
+                    {
+                        Debug.LogFormat("[Four-Card Monte {0}] Entered single cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0,0" + EnteredDollars, "$0,0" + DesiredDollars);
+                        StartCoroutine("WrongPayment");
+                        GetComponent<KMBombModule>().HandleStrike();
+                    }
                 }
                 else
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Entered single cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0,0" + EnteredDollars, "$0,0" + DesiredDollars);
+                    Debug.LogFormat("[Four-Card Monte {0}] Entered 10 cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0," + EnteredDollars + "0", "$0," + DesiredDollars + "0");
                     StartCoroutine("WrongPayment");
                     GetComponent<KMBombModule>().HandleStrike();
                 }
             }
             else
             {
-                Debug.LogFormat("[Four-Card Monte {0}] Entered 10 cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0," + EnteredDollars + "0", "$0," + DesiredDollars + "0");
+                Debug.LogFormat("[Four-Card Monte {0}] Entered dollars ({1}) is invalid. (Desired: {2})", ModuleID, EnteredDollars, DesiredDollars);
                 StartCoroutine("WrongPayment");
                 GetComponent<KMBombModule>().HandleStrike();
             }
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Entered dollars ({1}) is invalid. (Desired: {2})", ModuleID, EnteredDollars, DesiredDollars);
-            StartCoroutine("WrongPayment");
+            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack"));
+            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack"));
+            Debug.LogFormat("<Four-Card Monte {0}> Solvable casino modules: {1}, Solved casino modules: {2}", ModuleID, SolvableCasinoModules, SolvedCasinoModules);
+            Debug.LogFormat("[Four-Card Monte {0}] Cannot deal now: There is still an unsolved casino module.", ModuleID);
+            StartCoroutine("CannotSendNow");
             GetComponent<KMBombModule>().HandleStrike();
         }
         return false;
@@ -3118,6 +3131,35 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.color = Color.red;
                 StatusText.text = "Wrong payment!";
+            }
+            else
+            {
+                StatusText.color = Color.white;
+                StatusText.text = "Set the payment.";
+                StopCoroutine("WrongPayment");
+            }
+            yield return new WaitForSecondsRealtime(1);
+        }
+    }
+
+    IEnumerator CannotSendNow()
+    {
+        for (int T = 0; T < 4; T++)
+        {
+            if (T == 0)
+            {
+                StatusText.color = Color.red;
+                StatusText.text = "Cannot send now.";
+            }
+            else if (T == 1)
+            {
+                StatusText.color = Color.red;
+                StatusText.text = "Casino modules";
+            }
+            else if (T == 2)
+            {
+                StatusText.color = Color.red;
+                StatusText.text = "still unsolved.";
             }
             else
             {
