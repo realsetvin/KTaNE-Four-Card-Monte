@@ -295,7 +295,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool Deal()
     {
-        Debug.LogFormat("[Four-Card Monte {0}] Pressed \"Deal\"", ModuleID);
+        Debug.LogFormat("[Four-Card Monte #{0}] Pressed \"Deal\"", ModuleID);
         DealBtn.AddInteractionPunch();
         if ((int)(BombInfo.GetTime() / 60) % 2 == 0)
         {
@@ -326,7 +326,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Couldn't deal now, because the solve count ({1}) is below 5", ModuleID, BombInfo.GetSolvedModuleNames().Count());
+                    Debug.LogFormat("[Four-Card Monte #{0}] Couldn't deal now, because the solve count ({1}) is below 5", ModuleID, BombInfo.GetSolvedModuleNames().Count());
                     StatusText.color = Color.red;
                     StatusText.text = "CAN'T DEAL NOW";
                     GetComponent<KMBombModule>().HandleStrike();
@@ -358,7 +358,7 @@ public class Krit4CardMonte : MonoBehaviour
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Couldn't deal now, because the time was incorrect", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Couldn't deal now, because the time was incorrect", ModuleID);
             StatusText.color = Color.red;
             StatusText.text = "Can't deal now";
             GetComponent<KMBombModule>().HandleStrike();
@@ -511,7 +511,7 @@ public class Krit4CardMonte : MonoBehaviour
             CardCombo = "Total Trash";
         }
         
-        Debug.LogFormat("[Four-Card Monte {0}] Your hand: {1}", ModuleID, CardCombo);
+        Debug.LogFormat("[Four-Card Monte #{0}] Your hand: {1}", ModuleID, CardCombo);
         FlowchartCalculation();
     }
 
@@ -848,7 +848,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
             }
         }
-        Debug.LogFormat("[Four-Card Monte {0}] The correct card is {1}", ModuleID, CorrectCard);
+        Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1}", ModuleID, CorrectCard);
     }
 
     void CorrectCoinCalculation()
@@ -937,7 +937,7 @@ public class Krit4CardMonte : MonoBehaviour
             CorrectCoin = SNOffset;
             Rule = "None of the rules apply and the serial doesn't contain a vowel";
         }
-        Debug.LogFormat("[Four-Card Monte {0}] {1}, so the desired coin is coin {2}", ModuleID, Rule, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] {1}, so the desired coin is coin {2}", ModuleID, Rule, CorrectCoin);
     }
 
     IEnumerator DealCard1()
@@ -1180,27 +1180,27 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin1()
     {
         Coin1Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Coin pressed: 1, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 1, Desired: {1}", ModuleID, CorrectCoin);
         if (CorrectCoin == 1)
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
             if (!DealAgain)
             {
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
                 StartCoroutine("FlipCard1");
             }
             else
             {
                 StartCoroutine("FlipCard1Again");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
         }
         else
         {
             StatusText.color = Color.red;
             StatusText.text = "Bet declined!";
-            Debug.LogFormat("[Four-Card Monte {0}] Bet was invalid. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Bet was invalid. Strike handed.", ModuleID);
             GetComponent<KMBombModule>().HandleStrike();
         }
         return false;
@@ -1208,7 +1208,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin2()
     {
         Coin10Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Coin pressed: 2, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 2, Desired: {1}", ModuleID, CorrectCoin);
         if (CorrectCoin == 2)
         {
             Coins.SetActive(false);
@@ -1216,19 +1216,19 @@ public class Krit4CardMonte : MonoBehaviour
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
             else
             {
                 StartCoroutine("FlipCard1Again");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
         }
         else
         {
             StatusText.color = Color.red;
             StatusText.text = "Bet declined!";
-            Debug.LogFormat("[Four-Card Monte {0}] Bet was invalid. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Bet was invalid. Strike handed.", ModuleID);
             GetComponent<KMBombModule>().HandleStrike();
         }
         return false;
@@ -1236,7 +1236,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin3()
     {
         Coin100Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Coin pressed: 3, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 3, Desired: {1}", ModuleID, CorrectCoin);
         if (CorrectCoin == 3)
         {
             Coins.SetActive(false);
@@ -1244,19 +1244,19 @@ public class Krit4CardMonte : MonoBehaviour
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
             else
             {
                 StartCoroutine("FlipCard1Again");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
         }
         else
         {
             StatusText.color = Color.red;
             StatusText.text = "Bet declined!";
-            Debug.LogFormat("[Four-Card Monte {0}] Bet was invalid. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Bet was invalid. Strike handed.", ModuleID);
             GetComponent<KMBombModule>().HandleStrike();
         }
         return false;
@@ -1264,7 +1264,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin4()
     {
         Coin250Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Coin pressed: 4, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 4, Desired: {1}", ModuleID, CorrectCoin);
         if (CorrectCoin == 4)
         {
             Coins.SetActive(false);
@@ -1272,19 +1272,19 @@ public class Krit4CardMonte : MonoBehaviour
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
             else
             {
                 StartCoroutine("FlipCard1Again");
-                Debug.LogFormat("[Four-Card Monte {0}] Bet accepted. Shuffling...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
             }
         }
         else
         {
             StatusText.color = Color.red;
             StatusText.text = "Bet declined!";
-            Debug.LogFormat("[Four-Card Monte {0}] Bet was invalid. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Bet was invalid. Strike handed.", ModuleID);
             GetComponent<KMBombModule>().HandleStrike();
         }
         return false;
@@ -1994,15 +1994,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card1()
     {
         Card1Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
+        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
         if (CorrectCard == 1)
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was correct. You win.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
             StartCoroutine("ShowCard1");
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was incorrect. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was incorrect. Strike handed.", ModuleID);
             StartCoroutine("ShowCard1Strike");
         }
         return false;
@@ -2010,15 +2010,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card2()
     {
         Card2Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
+        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
         if (CorrectCard == 2)
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was correct. You win.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
             StartCoroutine("ShowCard2");
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was incorrect. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was incorrect. Strike handed.", ModuleID);
             StartCoroutine("ShowCard2Strike");
         }
         return false;
@@ -2026,15 +2026,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card3()
     {
         Card3Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
+        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
         if (CorrectCard == 3)
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was correct. You win.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
             StartCoroutine("ShowCard3");
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was incorrect. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was incorrect. Strike handed.", ModuleID);
             StartCoroutine("ShowCard3Strike");
         }
         return false;
@@ -2042,15 +2042,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card4()
     {
         Card4Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
+        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
         if (CorrectCard == 4)
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was correct. You win.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
             StartCoroutine("ShowCard4");
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Card was incorrect. Strike handed.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Card was incorrect. Strike handed.", ModuleID);
             StartCoroutine("ShowCard4Strike");
         }
         return false;
@@ -2608,7 +2608,7 @@ public class Krit4CardMonte : MonoBehaviour
         }
         MoneyCalulation();
         CardNumberText.text = CardNumber;
-        Debug.LogFormat("[Four-Card Monte {0}] Card Number is {1}", ModuleID, CardNumber);
+        Debug.LogFormat("[Four-Card Monte #{0}] Card Number is {1}", ModuleID, CardNumber);
     }
 
     void MoneyCalulation()
@@ -2665,13 +2665,13 @@ public class Krit4CardMonte : MonoBehaviour
         {
             DollarOffset = DollarOffset - 1000;
         }
-        Debug.LogFormat("[Four-Card Monte {0}] Desired dollar count: ${1}", ModuleID, DollarOffset);
+        Debug.LogFormat("[Four-Card Monte #{0}] Desired dollar count: ${1}", ModuleID, DollarOffset);
 
         DesiredDollars = DollarOffset;
         //Cents:
         DesiredCent1 = AllCardNumbers[BombInfo.GetSerialNumberNumbers().First()];
         DesiredCent2 = AllCardNumbers[BombInfo.GetSerialNumberNumbers().Last()];
-        Debug.LogFormat("[Four-Card Monte {0}] Desired cents count: $0.{1}{2}", ModuleID, DesiredCent1, DesiredCent2);
+        Debug.LogFormat("[Four-Card Monte #{0}] Desired cents count: $0.{1}{2}", ModuleID, DesiredCent1, DesiredCent2);
     }
 
     IEnumerator PaymentDeviceAnim()
@@ -2712,7 +2712,7 @@ public class Krit4CardMonte : MonoBehaviour
 
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2744,7 +2744,7 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2776,8 +2776,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2809,8 +2809,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2842,8 +2842,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2875,8 +2875,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2908,8 +2908,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2941,8 +2941,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -2974,8 +2974,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -3007,8 +3007,8 @@ public class Krit4CardMonte : MonoBehaviour
                 DollarText.text = "$" + Dollars;
                 if (CurrentChar == 3)
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-                    Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+                    Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+                    Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
                     InputtingCents = true;
                     CurrentChar = 0;
                 }
@@ -3032,7 +3032,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool PayDevKeyResetPress()
     {
         PayDevKeyReset.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte {0}] Reset in order", ModuleID);
+        Debug.LogFormat("[Four-Card Monte #{0}] Reset in order", ModuleID);
         Dollars = "000";
         Cents = "00";
         DollarText.text = "$" + Dollars;
@@ -3047,14 +3047,14 @@ public class Krit4CardMonte : MonoBehaviour
         PayDevKeyCents.AddInteractionPunch();
         if (!InputtingCents)
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Now inputting cents.", ModuleID);
-            Debug.LogFormat("[Four-Card Monte {0}] Input: ${1}", ModuleID, int.Parse(Dollars));
+            Debug.LogFormat("[Four-Card Monte #{0}] Now inputting cents.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Input: ${1}", ModuleID, int.Parse(Dollars));
             CurrentChar = 1;
             InputtingCents = true;
         }
         else
         {
-            Debug.LogFormat("[Four-Card Monte {0}] Already inputting cents.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Already inputting cents.", ModuleID);
         }
         return false;
     }
@@ -3065,21 +3065,21 @@ public class Krit4CardMonte : MonoBehaviour
         int EnteredDollars = int.Parse(Dollars);
         int EnteredCent1 = int.Parse(Cents.Substring(0, 1));
         int EnteredCent2 = int.Parse(Cents.Substring(1));
-        Debug.LogFormat("[Four-Card Monte {0}] Pressed \"Submit\"", ModuleID);
-        Debug.LogFormat("[Four-Card Monte {0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
-        Debug.LogFormat("[Four-Card Monte {0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
+        Debug.LogFormat("[Four-Card Monte #{0}] Pressed \"Submit\"", ModuleID);
+        Debug.LogFormat("[Four-Card Monte #{0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
+        Debug.LogFormat("[Four-Card Monte #{0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
 
         if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
         {
             if (EnteredDollars == DesiredDollars)
             {
-                Debug.LogFormat("[Four-Card Monte {0}] Entered dollars correct. Checking cents...", ModuleID);
+                Debug.LogFormat("[Four-Card Monte #{0}] Entered dollars correct. Checking cents...", ModuleID);
                 if (EnteredCent1 == DesiredCent1)
                 {
                     if (EnteredCent2 == DesiredCent2)
                     {
-                        Debug.LogFormat("[Four-Card Monte {0}] Entered cents correct.", ModuleID);
-                        Debug.LogFormat("[Four-Card Monte {0}] Winnings accepted and sent. Module solved.", ModuleID);
+                        Debug.LogFormat("[Four-Card Monte #{0}] Entered cents correct.", ModuleID);
+                        Debug.LogFormat("[Four-Card Monte #{0}] Winnings accepted and sent. Module solved.", ModuleID);
                         TotalEarningsTicket.text = "$" + EnteredDollars.ToString() + "," + EnteredCent1.ToString() + EnteredCent2.ToString();
                         CardNumberTicket.text = CardNumber;
                         int RandomMessage = Random.Range(3, 5);
@@ -3092,21 +3092,21 @@ public class Krit4CardMonte : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogFormat("[Four-Card Monte {0}] Entered single cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0,0" + EnteredDollars, "$0,0" + DesiredDollars);
+                        Debug.LogFormat("[Four-Card Monte #{0}] Entered single cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0,0" + EnteredDollars, "$0,0" + DesiredDollars);
                         StartCoroutine("WrongPayment");
                         GetComponent<KMBombModule>().HandleStrike();
                     }
                 }
                 else
                 {
-                    Debug.LogFormat("[Four-Card Monte {0}] Entered 10 cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0," + EnteredDollars + "0", "$0," + DesiredDollars + "0");
+                    Debug.LogFormat("[Four-Card Monte #{0}] Entered 10 cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0," + EnteredDollars + "0", "$0," + DesiredDollars + "0");
                     StartCoroutine("WrongPayment");
                     GetComponent<KMBombModule>().HandleStrike();
                 }
             }
             else
             {
-                Debug.LogFormat("[Four-Card Monte {0}] Entered dollars ({1}) is invalid. (Desired: {2})", ModuleID, EnteredDollars, DesiredDollars);
+                Debug.LogFormat("[Four-Card Monte #{0}] Entered dollars ({1}) is invalid. (Desired: {2})", ModuleID, EnteredDollars, DesiredDollars);
                 StartCoroutine("WrongPayment");
                 GetComponent<KMBombModule>().HandleStrike();
             }
@@ -3116,7 +3116,7 @@ public class Krit4CardMonte : MonoBehaviour
             int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack"));
             int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack"));
             Debug.LogFormat("<Four-Card Monte {0}> Solvable casino modules: {1}, Solved casino modules: {2}", ModuleID, SolvableCasinoModules, SolvedCasinoModules);
-            Debug.LogFormat("[Four-Card Monte {0}] Cannot deal now: There is still an unsolved casino module.", ModuleID);
+            Debug.LogFormat("[Four-Card Monte #{0}] Cannot deal now: There is still an unsolved casino module.", ModuleID);
             StartCoroutine("CannotSendNow");
             GetComponent<KMBombModule>().HandleStrike();
         }

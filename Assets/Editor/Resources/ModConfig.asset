@@ -19,9 +19,9 @@ MonoBehaviour:
     ModuleID: Krit4CardMonte
 
 
-    Manual (HTML): NAN
+    Manual (HTML): https://ktane.timwi.de/HTML/Four-Card%20Monte.html
 
-    Manual (PDF): https://drive.google.com/file/d/1hhCisyrWvD9UJf5yWDqkd9bFzUMS45oS/view?usp=sharing'
+    Manual (PDF): https://ktane.timwi.de/PDF/Four-Card%20Monte.pdf'
   version: v777
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 59afad0d1f55f284facbe1f28813af0e, type: 3}
