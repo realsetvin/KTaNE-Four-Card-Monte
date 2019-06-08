@@ -2004,6 +2004,10 @@ public class Krit4CardMonte : MonoBehaviour
     {
         Card1Sel.AddInteractionPunch();
         Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
+        Card1Sel.OnInteract = InactiveCard;
+        Card2Sel.OnInteract = InactiveCard;
+        Card3Sel.OnInteract = InactiveCard;
+        Card4Sel.OnInteract = InactiveCard;
         if (CorrectCard == 1)
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
@@ -2020,6 +2024,10 @@ public class Krit4CardMonte : MonoBehaviour
     {
         Card2Sel.AddInteractionPunch();
         Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
+        Card1Sel.OnInteract = InactiveCard;
+        Card2Sel.OnInteract = InactiveCard;
+        Card3Sel.OnInteract = InactiveCard;
+        Card4Sel.OnInteract = InactiveCard;
         if (CorrectCard == 2)
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
@@ -2036,6 +2044,10 @@ public class Krit4CardMonte : MonoBehaviour
     {
         Card3Sel.AddInteractionPunch();
         Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
+        Card1Sel.OnInteract = InactiveCard;
+        Card2Sel.OnInteract = InactiveCard;
+        Card3Sel.OnInteract = InactiveCard;
+        Card4Sel.OnInteract = InactiveCard;
         if (CorrectCard == 3)
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
@@ -2052,6 +2064,10 @@ public class Krit4CardMonte : MonoBehaviour
     {
         Card4Sel.AddInteractionPunch();
         Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
+        Card1Sel.OnInteract = InactiveCard;
+        Card2Sel.OnInteract = InactiveCard;
+        Card3Sel.OnInteract = InactiveCard;
+        Card4Sel.OnInteract = InactiveCard;
         if (CorrectCard == 4)
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card was correct. You win.", ModuleID);
@@ -2209,6 +2225,10 @@ public class Krit4CardMonte : MonoBehaviour
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
                 StopCoroutine("ShowCard1Strike");
+                Card1Sel.OnInteract = Card1;
+                Card2Sel.OnInteract = Card2;
+                Card3Sel.OnInteract = Card3;
+                Card4Sel.OnInteract = Card4;
             }
             ShowFrame++;
             yield return new WaitForSecondsRealtime(0.5f);
@@ -2237,6 +2257,10 @@ public class Krit4CardMonte : MonoBehaviour
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
                 StopCoroutine("ShowCard2Strike");
+                Card1Sel.OnInteract = Card1;
+                Card2Sel.OnInteract = Card2;
+                Card3Sel.OnInteract = Card3;
+                Card4Sel.OnInteract = Card4;
             }
             ShowFrame++;
             yield return new WaitForSecondsRealtime(0.5f);
@@ -2265,6 +2289,10 @@ public class Krit4CardMonte : MonoBehaviour
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
                 StopCoroutine("ShowCard3Strike");
+                Card1Sel.OnInteract = Card1;
+                Card2Sel.OnInteract = Card2;
+                Card3Sel.OnInteract = Card3;
+                Card4Sel.OnInteract = Card4;
             }
             ShowFrame++;
             yield return new WaitForSecondsRealtime(0.5f);
@@ -2297,6 +2325,10 @@ public class Krit4CardMonte : MonoBehaviour
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
                 StopCoroutine("ShowCard4Strike");
+                Card1Sel.OnInteract = Card1;
+                Card2Sel.OnInteract = Card2;
+                Card3Sel.OnInteract = Card3;
+                Card4Sel.OnInteract = Card4;
             }
             ShowFrame++;
             yield return new WaitForSecondsRealtime(0.5f);
