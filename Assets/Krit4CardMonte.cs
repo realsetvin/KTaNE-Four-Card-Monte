@@ -93,27 +93,82 @@ public class Krit4CardMonte : MonoBehaviour
     bool InputtingCents = false;
     bool DealAgain = false;
 
-    //Only for Unity testing purposes.
-    KMSelectable[] ProcessTwitchCommand(string command)
+    public readonly string TwitchHelpMessage = "deal [press deal] | coin <#> [select a coin from left to right] | card <#> [select a card from left to right] | send <###.##> [send an amount of money]";
+    IEnumerable<KMSelectable> ProcessTwitchCommand(string command)
     {
-        command = command.ToLowerInvariant().Trim();
-        if (command.Equals("press card 1"))
+        string[] split = command.ToLowerInvariant().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (split.Length == 1 && split[0] == "deal" && DealBtn.gameObject.activeInHierarchy)
         {
-            return new[] { Card1Sel };
+            yield return DealBtn;
         }
-        else if (command.Equals("press card 2"))
+        else if (split.Length == 2)
         {
-            return new[] { Card2Sel };
+            int position;
+            decimal amount;
+            if ((split[0] == "coin" || split[0] == "card") && int.TryParse(split[1], out position) && position >= 1 && position <= 4)
+            {
+                if (split[0] == "coin" && Coins.activeInHierarchy)
+                {
+                    yield return new[] { Coin1Sel, Coin10Sel, Coin100Sel, Coin250Sel }[position - 1];
+                }
+                else if (split[0] == "card" && CardHighlight4.activeInHierarchy)
+                {
+                    yield return new[] { Card1Sel, Card2Sel, Card3Sel, Card4Sel }.OrderBy(selectable => selectable.transform.localPosition.x).ToArray()[position - 1];
+                }
+            }
+            else if (split[0] == "send" && decimal.TryParse(split[1], out amount) && amount <= 999.99m && amount >= 0 && PaymentDevice.activeInHierarchy)
+            {
+                yield return PayDevKeyReset;
+
+                foreach (char character in amount.ToString("0.##"))
+                {
+                    if (character == '.')
+                    {
+                        if (!InputtingCents)
+                            yield return PayDevKeyCents;
+                    }
+                    else
+                    {
+                        yield return new[] { PayDevKey0, PayDevKey1, PayDevKey2, PayDevKey3, PayDevKey4, PayDevKey5, PayDevKey6, PayDevKey7, PayDevKey8, PayDevKey9 }[character - '0'];
+                    }
+                }
+
+                yield return PayDevKeySubmit;
+            }
         }
-        else if (command.Equals("press card 3"))
+
+        yield break;
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (((int) (BombInfo.GetTime() / 60) % 2 != 0) || ((AllModules.Count() >= 5) && !(BombInfo.GetSolvedModuleNames().Count() >= 5))) yield return true;
+        yield return InteractSelectables(ProcessTwitchCommand("deal"));
+
+        while (!Coins.activeInHierarchy) yield return true;
+        yield return InteractSelectables(ProcessTwitchCommand("coin " + CorrectCoin));
+
+        while (!CardHighlight4.activeInHierarchy) yield return true;
+        // This could just call KMSelectable.OnInteract(), but it helps test the command processor.
+        int cardIndex = new[] { Card1Sel, Card2Sel, Card3Sel, Card4Sel }.OrderBy(selectable => selectable.transform.localPosition.x).ToList().IndexOf(new[] { Card1Sel, Card2Sel, Card3Sel, Card4Sel }[CorrectCard - 1]) + 1;
+
+        yield return InteractSelectables(ProcessTwitchCommand("card " + cardIndex));
+
+        while (CardNumberText.text != CardNumber) yield return true;
+        while (new[] { "Silly Slots", "Poker", "Point Of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module)) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module)))) yield return true;
+
+        Debug.Log("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2);
+        yield return InteractSelectables(ProcessTwitchCommand("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2));
+    }
+
+    IEnumerator InteractSelectables(IEnumerable<KMSelectable> selectables)
+    {
+        foreach (KMSelectable selectable in selectables)
         {
-            return new[] { Card3Sel };
+            selectable.OnInteract();
+            yield return new WaitForSeconds(0.1f);
         }
-        else if (command.Equals("press card 4"))
-        {
-            return new[] { Card4Sel };
-        }
-        return null;
     }
 
     void Start()
@@ -146,6 +201,8 @@ public class Krit4CardMonte : MonoBehaviour
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
         Card4Sel.OnInteract = InactiveCard;
+
+        Coins.SetActive(false);
 
         Coin1Sel.OnInteract = Coin1;
         Coin10Sel.OnInteract = Coin2;
