@@ -1,0 +1,6 @@
+---------------------------------------------------------
+If a Flu$h module is not present in the list, either
+contact me in Discord (Kritzy (Retr0Wav3)#754),
+or submit a PR for the module via Github, as I
+probably won't add them myself unless someone reminds me.
+---------------------------------------------------------

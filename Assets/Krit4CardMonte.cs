@@ -36,7 +36,7 @@ public class Krit4CardMonte : MonoBehaviour
     };
     List<string> Royal_FlushModules = new List<string>
     {
-        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti"
+        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass"
     };
 
     public GameObject Card1Obj, Card2Obj, Card3Obj, Card4Obj;
@@ -58,11 +58,14 @@ public class Krit4CardMonte : MonoBehaviour
 
     public KMBombModule ThisModule;
 
+    public KMBossModule bossModule;
+
     public List<string> CardValues;
     public string[] AllCoinColors;
     public List<string> AllModules;
     public string CardCombo;
     string AllIndicators;
+    private string[] ignoredModules;
 
     public int[] AllCoinValues;
     public int CorrectCard = 0;
@@ -173,20 +176,34 @@ public class Krit4CardMonte : MonoBehaviour
 
     void Start()
     {
+        ignoredModules = bossModule.GetIgnoredModules("Four-Card Monte", new string[]
+        {
+            "Cookie Jars",
+            "Cruel Purgatory",
+            "Divided Squares",
+            "Forget Enigma",
+            "Forget Everything",
+            "Forget Me Not",
+            "Forget Perspective",
+            "Forget Them All",
+            "Forget This",
+            "Forget Us Not",
+            "Four-Card Monte",
+            "Hogwarts",
+            "Purgatory",
+            "Simon's Stages",
+            "Souvenir",
+            "Tallordered Keys",
+            "The Swan",
+            "The Time Keeper",
+            "Timing is Everything",
+            "The Troll",
+            "Turn The Key"
+        });
         ModuleID = moduleIdCounter++;
         ThisModule.OnActivate = delegate
         {
-            AllModules = BombInfo.GetModuleNames();
-            AllModules.RemoveAll(u => u.Equals("Four-Card Monte"));
-            AllModules.RemoveAll(u => u.Equals("Forget Everything"));
-            AllModules.RemoveAll(u => u.Equals("Forget Me Not"));
-            AllModules.RemoveAll(u => u.Equals("Forget This"));
-            AllModules.RemoveAll(u => u.Equals("Alchemy"));
-            AllModules.RemoveAll(u => u.Equals("Simon's Stages"));
-            AllModules.RemoveAll(u => u.Equals("Souvenir"));
-            AllModules.RemoveAll(u => u.Equals("The Time Keeper"));
-            AllModules.RemoveAll(u => u.Equals("Timing is Everything"));
-            AllModules.RemoveAll(u => u.Equals("Turn The Key"));
+            AllModules.RemoveAll(u => ignoredModules.Contains(u));
             InitialTimer = (int)BombInfo.GetTime();
         };
 

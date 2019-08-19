@@ -537,6 +537,7 @@ GameObject:
   - component: {fileID: 114556984773211968}
   - component: {fileID: 114660705141771120}
   - component: {fileID: 114520240065362304}
+  - component: {fileID: 114761904099742184}
   m_Layer: 0
   m_Name: Krit4CardMonte
   m_TagString: Untagged
@@ -24028,6 +24029,7 @@ MonoBehaviour:
   BombInfo: {fileID: 114556984773211968}
   TicketPrinting: {fileID: 114949827919924042}
   ThisModule: {fileID: 114446834370698864}
+  bossModule: {fileID: 0}
   CardValues:
   - 
   - 
@@ -25308,6 +25310,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - Standard
+--- !u!114 &114761904099742184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058823265169720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c03b993402a744b9fa1f222672a9c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114769422053575114
 MonoBehaviour:
   m_ObjectHideFlags: 1
