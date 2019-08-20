@@ -124,7 +124,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 yield return PayDevKeyReset;
 
-                foreach (char character in amount.ToString("0.##"))
+                foreach (char character in amount.ToString("0.00"))
                 {
                     if (character == '.')
                     {
@@ -161,7 +161,6 @@ public class Krit4CardMonte : MonoBehaviour
         while (CardNumberText.text != CardNumber) yield return true;
         while (new[] { "Silly Slots", "Poker", "Point Of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module)) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module)))) yield return true;
 
-        Debug.Log("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2);
         yield return InteractSelectables(ProcessTwitchCommand("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2));
     }
 
