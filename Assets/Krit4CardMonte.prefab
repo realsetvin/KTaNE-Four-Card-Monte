@@ -24029,7 +24029,7 @@ MonoBehaviour:
   BombInfo: {fileID: 114556984773211968}
   TicketPrinting: {fileID: 114949827919924042}
   ThisModule: {fileID: 114446834370698864}
-  bossModule: {fileID: 0}
+  bossModule: {fileID: 114761904099742184}
   CardValues:
   - 
   - 
