@@ -12,6 +12,7 @@ public class Krit4CardMonte : MonoBehaviour
     public KMSelectable DealBtn;
     public KMSelectable PayDevKey1, PayDevKey2, PayDevKey3, PayDevKey4, PayDevKey5, PayDevKey6, PayDevKey7, PayDevKey8, PayDevKey9, PayDevKey0;
     public KMSelectable PayDevKeyReset, PayDevKeySubmit, PayDevKeyCents, PayDevKeyShutdown;
+    public KMSelectable DisabledKey;
 
     public Renderer[] AllCards;
     public Renderer[] AllCoins;
@@ -32,7 +33,8 @@ public class Krit4CardMonte : MonoBehaviour
         "Well done...",
         "You win!",
         "A winner" + Environment.NewLine + "is you!",
-        "We did it" + Environment.NewLine + "Reddit!"
+        "We did it" + Environment.NewLine + "Reddit!",
+        "You have" + Environment.NewLine + "bested me."
     };
     List<string> Royal_FlushModules = new List<string>
     {
@@ -146,7 +148,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        while (((int) (BombInfo.GetTime() / 60) % 2 != 0) || ((AllModules.Count() >= 5) && !(BombInfo.GetSolvedModuleNames().Count() >= 5))) yield return true;
+        while (((int)(BombInfo.GetTime() / 60) % 2 != 0) || ((AllModules.Count() >= 5) && !(BombInfo.GetSolvedModuleNames().Count() >= 5))) yield return true;
         yield return InteractSelectables(ProcessTwitchCommand("deal"));
 
         while (!Coins.activeInHierarchy) yield return true;
@@ -249,111 +251,68 @@ public class Krit4CardMonte : MonoBehaviour
         foreach (Renderer Card in AllCards)
         {
             CardGenerator = Random.Range(0, CardsLeft);
-            switch (CardGenerator)
-            {
-                case 0:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[0];
-                        CardValues[CurrentCard] = AllPossibleCardValues[0];
-                        break;
-                    }
-                case 1:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[1];
-                        CardValues[CurrentCard] = AllPossibleCardValues[1];
-                        break;
-                    }
-                case 2:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[2];
-                        CardValues[CurrentCard] = AllPossibleCardValues[2];
-                        break;
-                    }
-                case 3:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[3];
-                        CardValues[CurrentCard] = AllPossibleCardValues[3];
-                        break;
-                    }
-                case 4:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[4];
-                        CardValues[CurrentCard] = AllPossibleCardValues[4];
-                        break;
-                    }
-                case 5:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[5];
-                        CardValues[CurrentCard] = AllPossibleCardValues[5];
-                        break;
-                    }
-                case 6:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[6];
-                        CardValues[CurrentCard] = AllPossibleCardValues[6];
-                        break;
-                    }
-                case 7:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[7];
-                        CardValues[CurrentCard] = AllPossibleCardValues[7];
-                        break;
-                    }
-                case 8:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[8];
-                        CardValues[CurrentCard] = AllPossibleCardValues[8];
-                        break;
-                    }
-                case 9:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[9];
-                        CardValues[CurrentCard] = AllPossibleCardValues[9];
-                        break;
-                    }
-                case 10:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[10];
-                        CardValues[CurrentCard] = AllPossibleCardValues[10];
-                        break;
-                    }
-                case 11:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[11];
-                        CardValues[CurrentCard] = AllPossibleCardValues[11];
-                        break;
-                    }
-                case 12:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[12];
-                        CardValues[CurrentCard] = AllPossibleCardValues[12];
-                        break;
-                    }
-                case 13:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[13];
-                        CardValues[CurrentCard] = AllPossibleCardValues[13];
-                        break;
-                    }
-                case 14:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[14];
-                        CardValues[CurrentCard] = AllPossibleCardValues[14];
-                        break;
-                    }
-                case 15:
-                    {
-                        Card.material.mainTexture = AllPossibleCards[15];
-                        CardValues[CurrentCard] = AllPossibleCardValues[15];
-                        break;
-                    }
-            }
+            Card.material.mainTexture = AllPossibleCards[CardGenerator];
+            CardValues[CurrentCard] = AllPossibleCardValues[CardGenerator];
+
             AllPossibleCards.Remove(Card.material.mainTexture);
             AllPossibleCardValues.Remove(CardValues[CurrentCard]);
             CurrentCard++;
             CardsLeft--;
         }
         StartCoroutine("DealText");
+
+        if (DateTime.Now.ToString("MM-dd") == "07-07")
+        {
+            Debug.Log("<Four-Card Monte #{0}> Surprise! It's 7th of July, so a secret happens...");
+            DisabledKey.OnInteract = EnabledKey;
+        }
+    }
+
+    protected bool EnabledKey()
+    {
+        StartCoroutine(Surprise());
+        DisabledKey.OnInteract = null;
+        return false;
+    }
+
+    IEnumerator Surprise()
+    {
+        for (int T = 0; T < 120; T++)
+        {
+            CardNumber = "";
+            for (int i = 0; i < 10; i++)
+            {
+                int CurrentNumber = 0;
+                int Digit = 0;
+                Digit = Random.Range(0, 10);
+                CardNumber += Digit.ToString();
+                AllCardNumbers[CurrentNumber] = Digit;
+                CurrentNumber++;
+
+                if (T == 0 || T == 7 || T == 14 || T == 21 || T == 28 || T == 35 || T == 42 || T == 49 || T == 56 || T == 63 || T == 70 || T == 77 || T == 84 || T == 91 || T == 98 || T == 105 || T == 112)
+                    CardNumberText.color = Color.Lerp(new Color32(255, 0, 0, 255), new Color32(255, 165, 0, 255), 0.01f);
+                else if (T == 1 || T == 8 || T == 15 || T == 22 || T == 29 || T == 36 || T == 43 || T == 50 || T == 57 || T == 64 || T == 71 || T == 78 || T == 85 || T == 92 || T == 99 || T == 106 || T == 113)
+                    CardNumberText.color = Color.Lerp(new Color32(255, 165, 0, 255), new Color32(255, 255, 0, 255), 0.01f);
+                else if (T == 2 || T == 9 || T == 16 || T == 23 || T == 30 || T == 37 || T == 44 || T == 51 || T == 58 || T == 65 || T == 72 || T == 79 || T == 86 || T == 93 || T == 100 || T == 107 || T == 114)
+                    CardNumberText.color = Color.Lerp(new Color32(255, 255, 0, 255), new Color32(0, 255, 0, 255), 0.01f);
+                else if (T == 3 || T == 10 || T == 17 || T == 24 || T == 31 || T == 38 || T == 45 || T == 52 || T == 59 || T == 66 || T == 73 || T == 80 || T == 87 || T == 94 || T == 101 || T == 108 || T == 115)
+                    CardNumberText.color = Color.Lerp(new Color32(0, 255, 0, 255), new Color32(0, 0, 255, 255), 0.01f);
+                else if (T == 4 || T == 11 || T == 18 || T == 25 || T == 32 || T == 39 || T == 46 || T == 53 || T == 60 || T == 67 || T == 74 || T == 81 || T == 88 || T == 95 || T == 102 || T == 109 || T == 116)
+                    CardNumberText.color = Color.Lerp(new Color32(0, 0, 255, 255), new Color32(255, 0, 255, 255), 0.01f);
+                else if (T == 5 || T == 12 || T == 19 || T == 26 || T == 33 || T == 40 || T == 47 || T == 54 || T == 61 || T == 68 || T == 75 || T == 82 || T == 89 || T == 96 || T == 103 || T == 110 || T == 117)
+                    CardNumberText.color = Color.Lerp(new Color32(255, 0, 255, 255), new Color32(255, 20, 147, 255), 0.01f);
+                else if (T == 6 || T == 13 || T == 20 || T == 27 || T == 34 || T == 41 || T == 48 || T == 55 || T == 62 || T == 69 || T == 76 || T == 83 || T == 90 || T == 97 || T == 104 || T == 111 || T == 118)
+                    CardNumberText.color = Color.Lerp(new Color32(255, 20, 147, 255), new Color32(255, 0, 0, 255), 0.01f);
+
+            }
+            CardNumberText.text = CardNumber;
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+        CardNumber = "7777777777";
+        CardNumberText.color = Color.white;
+        CardNumberText.text = CardNumber;
+        Debug.LogFormat("[Four-Card Monte #{0}] It's your lucky day!", ModuleID);
+        Debug.LogFormat("[Four-Card Monte #{0}] Card Number is now {1}", ModuleID, CardNumber);
     }
 
     IEnumerator DealText()
@@ -941,7 +900,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "First card is Ace of Spades and BOB is lit";
             CorrectCoin = 1;
         }
-        else if (CardValues[3] == "Jack Of Clubs" && AllCoinColors.Count("Red".Contains) > 1)
+        if (CardValues[3] == "Jack Of Clubs" && AllCoinColors.Where(x => x.Contains("Red")).Count() > 1)
         {
             Rule = "Last card is Jack Of Clubs and 2-4 red coins";
             CorrectCoin = 4;
@@ -958,7 +917,7 @@ public class Krit4CardMonte : MonoBehaviour
         }
         else if (CardValues.Any(x => x.Contains("Spades")) && CardValues.Any(x => x.Contains("Clubs")) && CardValues.Any(x => x.Contains("Hearts")) && CardValues.Any(x => x.Contains("Diamonds")))
         {
-            Rule = "All card are from different suits";
+            Rule = "All cards are from different suits";
             CorrectCoin = 1;
         }
         else if (CardValues.Count(x => x.Contains("Spades")) == 2 && CardValues.Count(x => x.Contains("Clubs")) == 2)
