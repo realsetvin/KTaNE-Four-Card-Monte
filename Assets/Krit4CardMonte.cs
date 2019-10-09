@@ -38,7 +38,7 @@ public class Krit4CardMonte : MonoBehaviour
     };
     List<string> Royal_FlushModules = new List<string>
     {
-        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass"
+        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass", "Simon's on First", "Weird Al Yankovic"
     };
 
     public GameObject Card1Obj, Card2Obj, Card3Obj, Card4Obj;
@@ -202,6 +202,7 @@ public class Krit4CardMonte : MonoBehaviour
             "Turn The Key"
         });
         ModuleID = moduleIdCounter++;
+        AllModules = BombInfo.GetSolvableModuleNames();
         ThisModule.OnActivate = delegate
         {
             AllModules.RemoveAll(u => ignoredModules.Contains(u));
@@ -551,7 +552,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             CardCombo = "Total Trash";
         }
-        
+
         Debug.LogFormat("[Four-Card Monte #{0}] Your hand: {1}", ModuleID, CardCombo);
         FlowchartCalculation();
     }
@@ -837,7 +838,6 @@ public class Krit4CardMonte : MonoBehaviour
         //Flowchart: Total Trash
         else
         {
-
             if (Hour >= 0 && Hour < 12)
             {
                 if (Day % 2 == 0)
@@ -865,7 +865,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else
             {
-                if (Day % 2 == 1)
+                if (Day % 2 == 0)
                 {
                     if (BombInfo.GetTime() >= 300)
                     {
