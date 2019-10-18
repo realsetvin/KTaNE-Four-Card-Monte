@@ -840,9 +840,9 @@ public class Krit4CardMonte : MonoBehaviour
         {
             if (Hour >= 0 && Hour < 12)
             {
-                if (Day % 2 == 0)
+                if (Day % 2 != 0)
                 {
-                    if (BombInfo.GetTime() > InitialTimer / 2)
+                    if (BombInfo.GetTime() >= InitialTimer / 2)
                     {
                         CorrectCard = 1;
                     }
@@ -853,7 +853,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    if (BombInfo.GetTime() > InitialTimer / 2)
+                    if (BombInfo.GetTime() < InitialTimer / 2)
                     {
                         CorrectCard = 3;
                     }
