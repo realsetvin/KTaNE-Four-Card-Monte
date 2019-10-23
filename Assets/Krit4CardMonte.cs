@@ -925,7 +925,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "2 Spades and 2 Clubs present";
             CorrectCoin = 2;
         }
-        else if (CardValues.Count("Hearts".Contains) == 2 && CardValues.Count("Diamonds".Contains) == 2)
+        else if (CardValues.Count(x => x.Contains("hearts")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "2 Hearts and 2 Diamonds present";
             CorrectCoin = 4;
@@ -935,7 +935,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
         }
-        else if (CardValues.Count("Clubs".Contains) == 2 && CardValues.Count("Diamonds".Contains) == 2)
+        else if (CardValues.Count(x => x.Contains("Clubs")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
