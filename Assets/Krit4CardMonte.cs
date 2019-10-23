@@ -840,9 +840,9 @@ public class Krit4CardMonte : MonoBehaviour
         {
             if (Hour >= 0 && Hour < 12)
             {
-                if (Day % 2 == 0)
+                if (Day % 2 != 0)
                 {
-                    if (BombInfo.GetTime() > InitialTimer / 2)
+                    if (BombInfo.GetTime() >= InitialTimer / 2)
                     {
                         CorrectCard = 1;
                     }
@@ -853,7 +853,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    if (BombInfo.GetTime() > InitialTimer / 2)
+                    if (BombInfo.GetTime() < InitialTimer / 2)
                     {
                         CorrectCard = 3;
                     }
@@ -925,7 +925,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "2 Spades and 2 Clubs present";
             CorrectCoin = 2;
         }
-        else if (CardValues.Count("Hearts".Contains) == 2 && CardValues.Count("Diamonds".Contains) == 2)
+        else if (CardValues.Count(x => x.Contains("hearts")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "2 Hearts and 2 Diamonds present";
             CorrectCoin = 4;
@@ -935,7 +935,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
         }
-        else if (CardValues.Count("Clubs".Contains) == 2 && CardValues.Count("Diamonds".Contains) == 2)
+        else if (CardValues.Count(x => x.Contains("Clubs")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
@@ -945,7 +945,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
         }
-        else if (CardValues.Count("Spades".Contains) == 2 && CardValues.Count("Diamonds".Contains) == 2)
+        else if (CardValues.Count(x => x.Contains("Spades")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
