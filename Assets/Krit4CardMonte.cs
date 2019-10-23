@@ -945,7 +945,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
         }
-        else if (CardValues.Count("Spades".Contains) == 2 && CardValues.Count("Diamonds".Contains) == 2)
+        else if (CardValues.Count(x => x.Contains("Spades")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "You have 2 pairs";
             CorrectCoin = 3;
