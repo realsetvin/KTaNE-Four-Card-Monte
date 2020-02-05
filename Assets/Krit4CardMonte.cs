@@ -22,7 +22,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     List<string> AllPossibleCardValues = new List<string>
     {
-        "Ace Of Spades", "Ace Of Clubs", "Ace Of Hearts", "Ace Of Diamonds", "King Of Spades", "King Of Clubs", "King Of Hearts", "King Of Diamonds", "Queen Of Spades", "Queen Of Clubs", "Queen Of Hearts", "Queen Of Diamonds", "Jack Of Spades", "Jack Of Clubs", "Jack Of Hearts", "Jack Of Diamonds"
+        "Ace Of Spades", "King Of Spades", "Queen Of Spades", "Jack Of Spades", "Ace Of Clubs", "King Of Clubs", "Queen Of Clubs", "Jack Of Clubs", "Ace Of Hearts", "King Of Hearts", "Queen Of Hearts", "Jack Of Hearts", "Ace Of Diamonds", "King Of Diamonds", "Queen Of Diamonds", "Jack Of Diamonds"
     };
     List<string> ShutdownMessages = new List<string>
     {
@@ -62,7 +62,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     public KMBossModule bossModule;
 
-    public List<string> CardValues;
+    public List<string> CardValues, CardSuits;
     public string[] AllCoinColors;
     public List<string> AllModules;
     public string CardCombo;
@@ -257,14 +257,37 @@ public class Krit4CardMonte : MonoBehaviour
 
             AllPossibleCards.Remove(Card.material.mainTexture);
             AllPossibleCardValues.Remove(CardValues[CurrentCard]);
+
+            if (CardGenerator < 4)
+            {
+                //Suit is Spades
+                CardSuits[CurrentCard] = "Spades";
+            }
+            else if (CardGenerator >= 4 && CardGenerator < 8)
+            {
+                //Suit is Clubs
+                CardSuits[CurrentCard] = "Clubs";
+            }
+            else if (CardGenerator >= 8 && CardGenerator < 12)
+            {
+                //Suit is Hearts
+                CardSuits[CurrentCard] = "Hearts";
+            }
+            else if (CardGenerator >= 12)
+            {
+                //Suit is Diamonds
+                CardSuits[CurrentCard] = "Diamond";
+            }
+
             CurrentCard++;
             CardsLeft--;
         }
+        Debug.LogFormat("[Four-Card Monte #{0}] Your cards are: {1}, {2}, {3} and {4}", ModuleID, CardValues[0], CardValues[1], CardValues[2], CardValues[3]);
         StartCoroutine("DealText");
 
         if (DateTime.Now.ToString("MM-dd") == "07-07")
         {
-            Debug.Log("<Four-Card Monte #{0}> Surprise! It's 7th of July, so a secret happens...");
+            Debug.LogFormat("<Four-Card Monte #{0}> It is now the Lucky Date 07-07. The button will now be activated.", ModuleID);
             DisabledKey.OnInteract = EnabledKey;
         }
     }
@@ -345,6 +368,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 if (BombInfo.GetSolvedModuleNames().Count() >= 5)
                 {
+                    Debug.Log("Current bomb time: " + (int)BombInfo.GetTime() + ". Below half? " + ((int)BombInfo.GetTime() == InitialTimer));
                     if (!DealAgain)
                     {
                         DealBtn.gameObject.SetActive(false);
@@ -540,7 +564,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             CardCombo = "Queen's Rule";
         }
-        else if (CardValues.Distinct().Count() == 2)
+        else if (CardSuits.Distinct().Count() == 2)
         {
             CardCombo = "Dual Pairs";
         }
@@ -780,7 +804,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
         }
 
-        //Flowchart: Lucky Love Daul Pairs
+        //Flowchart: Lucky Love and Daul Pairs
         else if (CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
         {
             if (BombInfo.GetSolvedModuleNames().Count() > BombInfo.GetSolvableModuleNames().Count() / 2)
@@ -925,7 +949,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "2 Spades and 2 Clubs present";
             CorrectCoin = 2;
         }
-        else if (CardValues.Count(x => x.Contains("hearts")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
+        else if (CardValues.Count(x => x.Contains("Hearts")) == 2 && CardValues.Count(x => x.Contains("Diamonds")) == 2)
         {
             Rule = "2 Hearts and 2 Diamonds present";
             CorrectCoin = 4;
@@ -978,7 +1002,7 @@ public class Krit4CardMonte : MonoBehaviour
             CorrectCoin = SNOffset;
             Rule = "None of the rules apply and the serial doesn't contain a vowel";
         }
-        Debug.LogFormat("[Four-Card Monte #{0}] {1}, so the desired coin is coin {2}", ModuleID, Rule, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] {1}, so the desired coin is coin {2} (${3})", ModuleID, Rule, CorrectCoin, AllCoinValues[CorrectCoin - 1]);
     }
 
     IEnumerator DealCard1()
@@ -1221,7 +1245,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin1()
     {
         Coin1Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 1, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 1 (${1}), Desired: {2} (${3})", ModuleID, AllCoinValues[0], CorrectCoin, AllCoinValues[CorrectCoin - 1]);
         if (CorrectCoin == 1)
         {
             Coins.SetActive(false);
@@ -1249,7 +1273,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin2()
     {
         Coin10Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 2, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 2 (${1}), Desired: {2} (${3})", ModuleID, AllCoinValues[1], CorrectCoin, AllCoinValues[CorrectCoin - 1]);
         if (CorrectCoin == 2)
         {
             Coins.SetActive(false);
@@ -1277,7 +1301,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin3()
     {
         Coin100Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 3, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 3 (${1}), Desired: {2} (${3})", ModuleID, AllCoinValues[2], CorrectCoin, AllCoinValues[CorrectCoin - 1]);
         if (CorrectCoin == 3)
         {
             Coins.SetActive(false);
@@ -1305,7 +1329,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Coin4()
     {
         Coin250Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 4, Desired: {1}", ModuleID, CorrectCoin);
+        Debug.LogFormat("[Four-Card Monte #{0}] Coin pressed: 4 (${1}), Desired: {2} (${3})", ModuleID, AllCoinValues[3], CorrectCoin, AllCoinValues[CorrectCoin - 1]);
         if (CorrectCoin == 4)
         {
             Coins.SetActive(false);
@@ -3165,21 +3189,21 @@ public class Krit4CardMonte : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogFormat("[Four-Card Monte #{0}] Entered single cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0,0" + EnteredDollars, "$0,0" + DesiredDollars);
+                        Debug.LogFormat("[Four-Card Monte #{0}] Entered single cents (${1}) is invalid. (Desired: ${2})", ModuleID, "$0,0" + EnteredDollars, "$0,0" + DesiredDollars);
                         StartCoroutine("WrongPayment");
                         GetComponent<KMBombModule>().HandleStrike();
                     }
                 }
                 else
                 {
-                    Debug.LogFormat("[Four-Card Monte #{0}] Entered 10 cents ({1}) is invalid. (Desired: {2})", ModuleID, "$0," + EnteredDollars + "0", "$0," + DesiredDollars + "0");
+                    Debug.LogFormat("[Four-Card Monte #{0}] Entered 10 cents (${1}) is invalid. (Desired: ${2})", ModuleID, "$0," + EnteredDollars + "0", "$0," + DesiredDollars + "0");
                     StartCoroutine("WrongPayment");
                     GetComponent<KMBombModule>().HandleStrike();
                 }
             }
             else
             {
-                Debug.LogFormat("[Four-Card Monte #{0}] Entered dollars ({1}) is invalid. (Desired: {2})", ModuleID, EnteredDollars, DesiredDollars);
+                Debug.LogFormat("[Four-Card Monte #{0}] Entered dollars (${1}) is invalid. (Desired: ${2})", ModuleID, EnteredDollars, DesiredDollars);
                 StartCoroutine("WrongPayment");
                 GetComponent<KMBombModule>().HandleStrike();
             }
