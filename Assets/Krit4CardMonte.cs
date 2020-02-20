@@ -38,7 +38,7 @@ public class Krit4CardMonte : MonoBehaviour
     };
     List<string> Royal_FlushModules = new List<string>
     {
-        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass", "Simon's on First", "Weird Al Yankovic"
+        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Memorable Buttons", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Prime Encryption", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass", "Simon's on First", "Weird Al Yankovic"
     };
 
     public GameObject Card1Obj, Card2Obj, Card3Obj, Card4Obj;
@@ -97,6 +97,8 @@ public class Krit4CardMonte : MonoBehaviour
 
     bool InputtingCents = false;
     bool DealAgain = false;
+
+    bool _solved = false;
 
     public readonly string TwitchHelpMessage = "deal [press deal] | coin <#> [select a coin from left to right] | card <#> [select a card from left to right] | send <###.##> [send an amount of money]";
     IEnumerable<KMSelectable> ProcessTwitchCommand(string command)
@@ -3158,6 +3160,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool PayDevKeySubmitPress()
     {
+        if (_solved) return false;
         PayDevKeySubmit.AddInteractionPunch();
         int EnteredDollars = int.Parse(Dollars);
         int EnteredCent1 = int.Parse(Cents.Substring(0, 1));
@@ -3185,6 +3188,7 @@ public class Krit4CardMonte : MonoBehaviour
                         StartCoroutine("TicketDispensing");
                         TicketPrinting.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
                         TicketPrinting.PlaySoundAtTransform("TicketPrinting", transform);
+                        _solved = true;
                         GetComponent<KMBombModule>().HandlePass();
                     }
                     else
@@ -3318,6 +3322,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool ShutdownSequence()
     {
+        if (_solved) return false;
         int RandomMessage = Random.Range(0, 5);
         PayDevKeyShutdown.AddInteractionPunch();
         Debug.LogFormat("[Four-Card Monte] Pressed the power button. {1} Strike handed.", ModuleID, ShutdownMessages[RandomMessage]);
