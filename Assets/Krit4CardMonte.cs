@@ -926,7 +926,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "First card is Ace of Spades and BOB is lit";
             CorrectCoin = 1;
         }
-        if (CardValues[3] == "Jack Of Clubs" && AllCoinColors.Where(x => x.Contains("Red")).Count() > 1)
+        else if (CardValues[3] == "Jack Of Clubs" && AllCoinColors.Where(x => x.Contains("Red")).Count() > 1)
         {
             Rule = "Last card is Jack Of Clubs and 2-4 red coins";
             CorrectCoin = 4;
