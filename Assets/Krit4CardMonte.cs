@@ -256,29 +256,28 @@ public class Krit4CardMonte : MonoBehaviour
             CardGenerator = Random.Range(0, CardsLeft);
             Card.material.mainTexture = AllPossibleCards[CardGenerator];
             CardValues[CurrentCard] = AllPossibleCardValues[CardGenerator];
-
             AllPossibleCards.Remove(Card.material.mainTexture);
             AllPossibleCardValues.Remove(CardValues[CurrentCard]);
 
             if (CardGenerator < 4)
             {
                 //Suit is Spades
-                CardSuits[CurrentCard] = "Spades";
+                CardSuits.Add("Spades");
             }
             else if (CardGenerator >= 4 && CardGenerator < 8)
             {
                 //Suit is Clubs
-                CardSuits[CurrentCard] = "Clubs";
+                CardSuits.Add("Clubs");
             }
             else if (CardGenerator >= 8 && CardGenerator < 12)
             {
                 //Suit is Hearts
-                CardSuits[CurrentCard] = "Hearts";
+                CardSuits.Add("Hearts");
             }
             else if (CardGenerator >= 12)
             {
                 //Suit is Diamonds
-                CardSuits[CurrentCard] = "Diamond";
+                CardSuits.Add("Diamond");
             }
 
             CurrentCard++;
