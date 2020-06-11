@@ -24133,20 +24133,20 @@ MonoBehaviour:
   Coin250Texture: {fileID: 2800000, guid: 2c51507d69b49d74c957a4bbe8ce89d3, type: 3}
   AllPossibleCards:
   - {fileID: 2800000, guid: b54d17d4785d9dc43acf1445c881bed1, type: 3}
-  - {fileID: 2800000, guid: d46ff8829a406b34084f8c032e93970c, type: 3}
-  - {fileID: 2800000, guid: 44097fb01ac64b04d889a5b16eb65dbe, type: 3}
-  - {fileID: 2800000, guid: c7a41356b7414b94c9f011d5b96202f9, type: 3}
   - {fileID: 2800000, guid: e5a88d4a7ed570345897751982304893, type: 3}
-  - {fileID: 2800000, guid: 8077def154f9ba942a1e627c04bce505, type: 3}
-  - {fileID: 2800000, guid: cfc27a3b3f86c314fa5d97a2b712a03c, type: 3}
-  - {fileID: 2800000, guid: d548a40bcd126ca449a717b09bfc5072, type: 3}
   - {fileID: 2800000, guid: 35168b9b4e1059e41ad10f69f532af9c, type: 3}
-  - {fileID: 2800000, guid: 11a5bb5694837a34fa478925e20d3a29, type: 3}
-  - {fileID: 2800000, guid: 08a6c98fadf078749908e673c1d2e155, type: 3}
-  - {fileID: 2800000, guid: f30cb12a43ff168488dce5f6054683fa, type: 3}
   - {fileID: 2800000, guid: b56aa339e1414ad498a0e36d55e6d069, type: 3}
+  - {fileID: 2800000, guid: d46ff8829a406b34084f8c032e93970c, type: 3}
+  - {fileID: 2800000, guid: 8077def154f9ba942a1e627c04bce505, type: 3}
+  - {fileID: 2800000, guid: 11a5bb5694837a34fa478925e20d3a29, type: 3}
   - {fileID: 2800000, guid: 65b3d354661ff4f42982d6cf21841839, type: 3}
+  - {fileID: 2800000, guid: 44097fb01ac64b04d889a5b16eb65dbe, type: 3}
+  - {fileID: 2800000, guid: cfc27a3b3f86c314fa5d97a2b712a03c, type: 3}
+  - {fileID: 2800000, guid: 08a6c98fadf078749908e673c1d2e155, type: 3}
   - {fileID: 2800000, guid: 83179e3d3cb9ce342b0d6162b146b391, type: 3}
+  - {fileID: 2800000, guid: c7a41356b7414b94c9f011d5b96202f9, type: 3}
+  - {fileID: 2800000, guid: d548a40bcd126ca449a717b09bfc5072, type: 3}
+  - {fileID: 2800000, guid: f30cb12a43ff168488dce5f6054683fa, type: 3}
   - {fileID: 2800000, guid: 1ccd76b645cfb2a40a0132a6e8a2fd92, type: 3}
   Card1Obj: {fileID: 1148228072796248}
   Card2Obj: {fileID: 1181778775158106}
@@ -24177,6 +24177,7 @@ MonoBehaviour:
   - 
   - 
   - 
+  CardSuits: []
   AllCoinColors:
   - 
   - 
