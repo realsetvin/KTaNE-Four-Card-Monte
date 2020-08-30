@@ -163,7 +163,7 @@ public class Krit4CardMonte : MonoBehaviour
         yield return InteractSelectables(ProcessTwitchCommand("card " + cardIndex));
 
         while (CardNumberText.text != CardNumber) yield return true;
-        while (new[] { "Silly Slots", "Poker", "Point Of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module)) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module)))) yield return true;
+        while (new[] { "Silly Slots", "Poker", "Point of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module)) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module)))) yield return true;
 
         yield return InteractSelectables(ProcessTwitchCommand("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2));
     }
@@ -249,6 +249,7 @@ public class Krit4CardMonte : MonoBehaviour
 
         DealBtn.OnInteract = Deal;
 
+        CardSuits = new List<string>();
         int CurrentCard = 0;
         int CardsLeft = 16;
         foreach (Renderer Card in AllCards)
@@ -277,7 +278,7 @@ public class Krit4CardMonte : MonoBehaviour
             else if (CardGenerator >= 12)
             {
                 //Suit is Diamonds
-                CardSuits.Add("Diamond");
+                CardSuits.Add("Diamonds");
             }
 
             CurrentCard++;
@@ -579,10 +580,10 @@ public class Krit4CardMonte : MonoBehaviour
         }
 
         Debug.LogFormat("[Four-Card Monte #{0}] Your hand: {1}", ModuleID, CardCombo);
-        FlowchartCalculation();
+        FlowchartCalculation(false);
     }
 
-    void FlowchartCalculation()
+    void FlowchartCalculation(bool newcheck)
     {
         AllIndicators = string.Join("", BombInfo.GetIndicators().ToArray());
         //Flowchart: Four-Card Deluxe and Three of a suit
@@ -914,7 +915,16 @@ public class Krit4CardMonte : MonoBehaviour
                 }
             }
         }
-        Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1}", ModuleID, CorrectCard);
+        if (newcheck)
+            Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1} (At time of card flip)", ModuleID, CorrectCard);
+        else if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1} (At time of card generation)", ModuleID, CorrectCard);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1}", ModuleID, CorrectCard);
+        }
     }
 
     void CorrectCoinCalculation()
@@ -2060,7 +2070,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card1()
     {
         Card1Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2080,7 +2098,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card2()
     {
         Card2Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2100,7 +2126,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card3()
     {
         Card3Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2120,7 +2154,15 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card4()
     {
         Card4Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -3168,7 +3210,7 @@ public class Krit4CardMonte : MonoBehaviour
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
 
-        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point Of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point Of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
+        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
         {
             if (EnteredDollars == DesiredDollars)
             {
@@ -3213,8 +3255,8 @@ public class Krit4CardMonte : MonoBehaviour
         }
         else
         {
-            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point Of Order"));
-            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point Of Order"));
+            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point of Order"));
+            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point of Order"));
             Debug.LogFormat("<Four-Card Monte {0}> Solvable casino modules: {1}, Solved casino modules: {2}", ModuleID, SolvableCasinoModules, SolvedCasinoModules);
             Debug.LogFormat("[Four-Card Monte #{0}] Cannot deal now: There is still an unsolved casino module.", ModuleID);
             StartCoroutine("CannotSendNow");

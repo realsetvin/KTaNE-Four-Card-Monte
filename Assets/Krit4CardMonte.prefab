@@ -24177,7 +24177,11 @@ MonoBehaviour:
   - 
   - 
   - 
-  CardSuits: []
+  CardSuits:
+  - 
+  - 
+  - 
+  - 
   AllCoinColors:
   - 
   - 
