@@ -83,6 +83,7 @@ public class Krit4CardMonte : MonoBehaviour
     public int DesiredCent1, DesiredCent2;
     public int[] AllCardNumbers;
     int InitialTimer;
+    float DealTimer;
     int Hour = DateTime.Now.Hour;
     int Day = DateTime.Now.Day;
     //Module ID
@@ -352,6 +353,7 @@ public class Krit4CardMonte : MonoBehaviour
                 if (BombInfo.GetSolvedModuleNames().Count() >= 5)
                 {
                     Debug.Log("Current bomb time: " + (int)BombInfo.GetTime() + ". Below half? " + ((int)BombInfo.GetTime() == InitialTimer));
+                    DealTimer = BombInfo.GetTime();
                     if (!DealAgain)
                     {
                         DealBtn.gameObject.SetActive(false);
@@ -383,6 +385,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else
             {
+                DealTimer = BombInfo.GetTime();
                 if (!DealAgain)
                 {
                     DealBtn.gameObject.SetActive(false);
@@ -792,7 +795,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             if (BombInfo.GetSolvedModuleNames().Count() > BombInfo.GetSolvableModuleNames().Count() / 2)
             {
-                if (BombInfo.GetTime() < InitialTimer / 2)
+                if (DealTimer < InitialTimer / 2)
                 {
                     if (AllCoinValues[CorrectCoin - 1] == 1)
                     {
@@ -898,7 +901,7 @@ public class Krit4CardMonte : MonoBehaviour
         }
         if (newcheck)
             Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1} (At time of card flip)", ModuleID, CorrectCard);
-        else if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        else if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
             Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1} (At time of card generation)", ModuleID, CorrectCard);
         }
@@ -2051,7 +2054,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card1()
     {
         Card1Sel.AddInteractionPunch();
-        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1", ModuleID);
             FlowchartCalculation(true);
@@ -2079,7 +2082,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card2()
     {
         Card2Sel.AddInteractionPunch();
-        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2", ModuleID);
             FlowchartCalculation(true);
@@ -2107,7 +2110,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card3()
     {
         Card3Sel.AddInteractionPunch();
-        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3", ModuleID);
             FlowchartCalculation(true);
@@ -2135,7 +2138,7 @@ public class Krit4CardMonte : MonoBehaviour
     protected bool Card4()
     {
         Card4Sel.AddInteractionPunch();
-        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs")
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
             Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4", ModuleID);
             FlowchartCalculation(true);
@@ -3209,7 +3212,7 @@ public class Krit4CardMonte : MonoBehaviour
                         StartCoroutine("CorrectPayment");
                         StartCoroutine("TicketDispensing");
                         TicketPrinting.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
-                        TicketPrinting.PlaySoundAtTransform("TicketPrinting", transform);
+                        TicketPrinting.gameObject.GetComponent<AudioSource>().Play();
                         _solved = true;
                         GetComponent<KMBombModule>().HandlePass();
                     }
