@@ -56,7 +56,8 @@ public class Krit4CardMonte : MonoBehaviour
 
     public KMBombInfo BombInfo;
 
-    public KMAudio TicketPrinting;
+    public KMAudio SolveSound;
+    public AudioSource TicketPrinting;
 
     public KMBombModule ThisModule;
 
@@ -164,7 +165,7 @@ public class Krit4CardMonte : MonoBehaviour
         yield return InteractSelectables(ProcessTwitchCommand("card " + cardIndex));
 
         while (CardNumberText.text != CardNumber) yield return true;
-        while (new[] { "Silly Slots", "Poker", "Point of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module)) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module)))) yield return true;
+        while (new[] { "Silly Slots", "Poker", "Point of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module) && !name.Equals("Video Poker")) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module) && !name.Equals("Video Poker")))) yield return true;
 
         yield return InteractSelectables(ProcessTwitchCommand("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2));
     }
@@ -3194,7 +3195,7 @@ public class Krit4CardMonte : MonoBehaviour
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
 
-        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
+        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker") && !x.Equals("Video Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker") && !x.Equals("Video Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
         {
             if (EnteredDollars == DesiredDollars)
             {
@@ -3211,8 +3212,8 @@ public class Krit4CardMonte : MonoBehaviour
                         VictoryMessage.text = VictoryMessages[RandomMessage - 1];
                         StartCoroutine("CorrectPayment");
                         StartCoroutine("TicketDispensing");
-                        TicketPrinting.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
-                        TicketPrinting.gameObject.GetComponent<AudioSource>().Play();
+                        SolveSound.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
+                        TicketPrinting.Play();
                         _solved = true;
                         GetComponent<KMBombModule>().HandlePass();
                     }

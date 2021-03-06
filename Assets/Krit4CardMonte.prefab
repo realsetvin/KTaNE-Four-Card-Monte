@@ -5186,7 +5186,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4819156350452278}
   - component: {fileID: 82568403318061640}
-  - component: {fileID: 114949827919924042}
   m_Layer: 0
   m_Name: PrintingSound
   m_TagString: Untagged
@@ -24169,7 +24168,8 @@ MonoBehaviour:
   VictoryMessage: {fileID: 102232732631513998}
   VictoryText: {fileID: 102699945900559404}
   BombInfo: {fileID: 114556984773211968}
-  TicketPrinting: {fileID: 114949827919924042}
+  SolveSound: {fileID: 114660705141771120}
+  TicketPrinting: {fileID: 82568403318061640}
   ThisModule: {fileID: 114446834370698864}
   bossModule: {fileID: 114761904099742184}
   CardValues:
@@ -26202,17 +26202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - KT/Mobile/Diffuse
---- !u!114 &114949827919924042
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1941520791982286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1675560866, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114951571986960410
 MonoBehaviour:
   m_ObjectHideFlags: 1
