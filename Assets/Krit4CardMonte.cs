@@ -3240,8 +3240,8 @@ public class Krit4CardMonte : MonoBehaviour
         }
         else
         {
-            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point of Order"));
-            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point of Order"));
+            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x == "Silly Slots") + BombInfo.GetSolvableModuleNames().Count(x => x == "Poker") + BombInfo.GetSolvableModuleNames().Count(x => x == "Blackjack") + BombInfo.GetSolvableModuleNames().Count(x => x == "Point of Order");
+            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x == "Silly Slots") + BombInfo.GetSolvedModuleNames().Count(x => x == "Poker") + BombInfo.GetSolvedModuleNames().Count(x => x == "Blackjack") + BombInfo.GetSolvedModuleNames().Count(x => x == "Point of Order");
             Debug.LogFormat("<Four-Card Monte {0}> Solvable casino modules: {1}, Solved casino modules: {2}", ModuleID, SolvableCasinoModules, SolvedCasinoModules);
             Debug.LogFormat("[Four-Card Monte #{0}] Cannot deal now: There is still an unsolved casino module.", ModuleID);
             StartCoroutine("CannotSendNow");
