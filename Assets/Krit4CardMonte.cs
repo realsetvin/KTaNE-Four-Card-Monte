@@ -686,9 +686,9 @@ public class Krit4CardMonte : MonoBehaviour
         {
             if (AllModules.Any(x => Royal_FlushModules.Any(y => y == x)))
             {
-                if (AllModules.Any(x => x.Contains("Poker")))
+                if (AllModules.Any(x => x.Equals("Poker")))
                 {
-                    if (AllModules.Any(x => x.Contains("Modulo")))
+                    if (AllModules.Any(x => x.Equals("Modulo")))
                     {
                         CorrectCard = 1;
                     }
@@ -699,7 +699,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    if (AllModules.Any(x => x.Contains("British Slang")))
+                    if (AllModules.Any(x => x.Equals("British Slang")))
                     {
                         CorrectCard = 3;
                     }
@@ -713,7 +713,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 if (BombInfo.GetSolvedModuleNames().Count() > 7)
                 {
-                    if (AllModules.Any(x => x.Contains("Flip The Coin")))
+                    if (AllModules.Any(x => x.Equals("Flip The Coin")))
                     {
                         CorrectCard = 1;
                     }
@@ -724,7 +724,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    if (AllModules.Any(x => x.Contains("Blackjack")))
+                    if (AllModules.Any(x => x.Equals("Blackjack")))
                     {
                         CorrectCard = 3;
                     }
@@ -3195,7 +3195,7 @@ public class Krit4CardMonte : MonoBehaviour
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
 
-        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker") && !x.Equals("Video Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker") && !x.Equals("Video Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
+        if (BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Point of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Point of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Blackjack")))
         {
             if (EnteredDollars == DesiredDollars)
             {
