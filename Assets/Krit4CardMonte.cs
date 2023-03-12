@@ -48,6 +48,8 @@ public class Krit4CardMonte : MonoBehaviour
     public GameObject Ticket;
     public GameObject PaymentText;
 
+    public Renderer InfoCoin;
+
     public TextMesh StatusText;
     public TextMesh CardNumberText;
     public TextMesh DollarText, CentsText;
@@ -87,6 +89,7 @@ public class Krit4CardMonte : MonoBehaviour
     float DealTimer;
     int Hour = DateTime.Now.Hour;
     int Day = DateTime.Now.Day;
+    private bool EnableCardPresses;
     //Module ID
     static int moduleIdCounter = 1;
     int ModuleID;
@@ -1246,6 +1249,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[0].material.mainTexture;
             if (!DealAgain)
             {
                 Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
@@ -1274,6 +1278,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[1].material.mainTexture;
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
@@ -1302,6 +1307,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[2].material.mainTexture;
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
@@ -1330,6 +1336,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[3].material.mainTexture;
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
@@ -1927,6 +1934,7 @@ public class Krit4CardMonte : MonoBehaviour
                 CardHighlight2.SetActive(true);
                 CardHighlight3.SetActive(true);
                 CardHighlight4.SetActive(true);
+                EnableCardPresses = true;
                 CardHighlight1.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight2.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight3.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -1980,6 +1988,7 @@ public class Krit4CardMonte : MonoBehaviour
                 CardHighlight2.SetActive(true);
                 CardHighlight3.SetActive(true);
                 CardHighlight4.SetActive(true);
+                EnableCardPresses = true;
                 CardHighlight1.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight2.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight3.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -2033,6 +2042,7 @@ public class Krit4CardMonte : MonoBehaviour
                 CardHighlight2.SetActive(true);
                 CardHighlight3.SetActive(true);
                 CardHighlight4.SetActive(true);
+                EnableCardPresses = true;
                 CardHighlight1.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight2.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight3.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -2054,6 +2064,8 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool Card1()
     {
+        if(!EnableCardPresses)
+            return false;
         Card1Sel.AddInteractionPunch();
         if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
@@ -2082,6 +2094,8 @@ public class Krit4CardMonte : MonoBehaviour
     }
     protected bool Card2()
     {
+        if(!EnableCardPresses)
+            return false;
         Card2Sel.AddInteractionPunch();
         if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
@@ -2110,6 +2124,8 @@ public class Krit4CardMonte : MonoBehaviour
     }
     protected bool Card3()
     {
+        if(!EnableCardPresses)
+            return false;
         Card3Sel.AddInteractionPunch();
         if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
@@ -2138,6 +2154,8 @@ public class Krit4CardMonte : MonoBehaviour
     }
     protected bool Card4()
     {
+        if(!EnableCardPresses)
+            return false;
         Card4Sel.AddInteractionPunch();
         if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
         {
@@ -2183,6 +2201,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard2Anim");
                 StartCoroutine("ShowCard3Anim");
                 StartCoroutine("ShowCard4Anim");
@@ -2210,6 +2229,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard1Anim");
                 StartCoroutine("ShowCard3Anim");
                 StartCoroutine("ShowCard4Anim");
@@ -2237,6 +2257,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard1Anim");
                 StartCoroutine("ShowCard2Anim");
                 StartCoroutine("ShowCard4Anim");
@@ -2264,6 +2285,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard1Anim");
                 StartCoroutine("ShowCard2Anim");
                 StartCoroutine("ShowCard3Anim");
@@ -2305,6 +2327,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 ShowFrame = 0;
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
@@ -2337,6 +2360,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 ShowFrame = 0;
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
@@ -2369,6 +2393,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 ShowFrame = 0;
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
@@ -2401,6 +2426,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 Card1Sel.Highlight.gameObject.SetActive(true);
                 Card2Sel.Highlight.gameObject.SetActive(true);
                 Card3Sel.Highlight.gameObject.SetActive(true);
@@ -3252,6 +3278,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     IEnumerator WrongPayment()
     {
+        InfoCoin.gameObject.SetActive(true);
         for (int T = 0; T < 3; T++)
         {
             if (T == 0)
