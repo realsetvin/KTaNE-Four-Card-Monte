@@ -16,12 +16,15 @@ MonoBehaviour:
   description: 'A game of luck when defusing bombs, except if you can cheat luck.
 
 
+    Original module by: Kritzy
+
+
     ModuleID: Krit4CardMonte
 
 
     Manual (HTML): https://ktane.timwi.de/HTML/Four-Card%20Monte.html
 
     Manual (PDF): https://ktane.timwi.de/PDF/Four-Card%20Monte.pdf'
-  version: v777
+  version: v783
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 59afad0d1f55f284facbe1f28813af0e, type: 3}

@@ -38,7 +38,7 @@ public class Krit4CardMonte : MonoBehaviour
     };
     List<string> Royal_FlushModules = new List<string>
     {
-        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass", "Simon's on First", "Weird Al Yankovic"
+        "Accumulation", "Algebra", "Alphabet Numbers", "Benedict Cumberbatch", "Blockbusters", "British Slang", "Broken Guitar Chords", "Catchphrase", "Christmas Presents" , "Coffeebucks", "Countdown", "Cruel Countdown", "The Crystal Maze", "The Cube", "European Travel", "The Festive Jukebox", "Flashing Lights", "Free Parking", "Graffiti Numbers", "Guitar Chords", "The Hangover", "Hieroglyphics", "Homophones", "Horrible Memory", "Identity Parade", "The iPhone", "The Jack-O'-Lantern", "The Jewel Vault","The Jukebox", "The Labyrinth", "LED Grid", "Lightspeed", "The London Underground", "Maintenance", "Memorable Buttons", "Modulo", "The Moon", "Mortal Kombat", "The Number Cipher", "The Plunger Button", "Poker", "Prime Encryption", "Quintuples", "Retirement", "Reverse Morse", "Simon's Stages", "Simon's Star", "Skinny Wires", "Skyrim", "Snooker", "Sonic & Knuckles", "Sonic The Hedgehog", "The Sphere", "Spinning Buttons", "The Stock Market", "The Stopwatch", "Street Fighter", "The Sun", "The Swan", "Symbolic Coordinates", "Tax Returns", "The Triangle", "The Troll", "T-Words", "Westeros", "The Wire", "Wire Spaghetti", "The Matrix", "Stained Glass", "Simon's on First", "Weird Al Yankovic"
     };
 
     public GameObject Card1Obj, Card2Obj, Card3Obj, Card4Obj;
@@ -48,6 +48,8 @@ public class Krit4CardMonte : MonoBehaviour
     public GameObject Ticket;
     public GameObject PaymentText;
 
+    public Renderer InfoCoin;
+
     public TextMesh StatusText;
     public TextMesh CardNumberText;
     public TextMesh DollarText, CentsText;
@@ -56,7 +58,8 @@ public class Krit4CardMonte : MonoBehaviour
 
     public KMBombInfo BombInfo;
 
-    public KMAudio TicketPrinting;
+    public KMAudio SolveSound;
+    public AudioSource TicketPrinting;
 
     public KMBombModule ThisModule;
 
@@ -83,8 +86,10 @@ public class Krit4CardMonte : MonoBehaviour
     public int DesiredCent1, DesiredCent2;
     public int[] AllCardNumbers;
     int InitialTimer;
+    float DealTimer;
     int Hour = DateTime.Now.Hour;
     int Day = DateTime.Now.Day;
+    private bool EnableCardPresses;
     //Module ID
     static int moduleIdCounter = 1;
     int ModuleID;
@@ -97,6 +102,8 @@ public class Krit4CardMonte : MonoBehaviour
 
     bool InputtingCents = false;
     bool DealAgain = false;
+
+    bool _solved = false;
 
     public readonly string TwitchHelpMessage = "deal [press deal] | coin <#> [select a coin from left to right] | card <#> [select a card from left to right] | send <###.##> [send an amount of money]";
     IEnumerable<KMSelectable> ProcessTwitchCommand(string command)
@@ -161,7 +168,7 @@ public class Krit4CardMonte : MonoBehaviour
         yield return InteractSelectables(ProcessTwitchCommand("card " + cardIndex));
 
         while (CardNumberText.text != CardNumber) yield return true;
-        while (new[] { "Silly Slots", "Poker", "Point Of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module)) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module)))) yield return true;
+        while (new[] { "Silly Slots", "Poker", "Point of Order", "Blackjack" }.Any(module => BombInfo.GetSolvableModuleNames().Count(name => name.Contains(module) && !name.Equals("Video Poker")) != BombInfo.GetSolvedModuleNames().Count(name => name.Contains(module) && !name.Equals("Video Poker")))) yield return true;
 
         yield return InteractSelectables(ProcessTwitchCommand("send " + DesiredDollars + "." + DesiredCent1 + DesiredCent2));
     }
@@ -247,38 +254,19 @@ public class Krit4CardMonte : MonoBehaviour
 
         DealBtn.OnInteract = Deal;
 
+        CardSuits = new List<string>();
         int CurrentCard = 0;
         int CardsLeft = 16;
         foreach (Renderer Card in AllCards)
         {
             CardGenerator = Random.Range(0, CardsLeft);
             Card.material.mainTexture = AllPossibleCards[CardGenerator];
-            CardValues[CurrentCard] = AllPossibleCardValues[CardGenerator];
-
+            var value = AllPossibleCardValues[CardGenerator];
+            CardValues[CurrentCard] = value;
             AllPossibleCards.Remove(Card.material.mainTexture);
             AllPossibleCardValues.Remove(CardValues[CurrentCard]);
-
-            if (CardGenerator < 4)
-            {
-                //Suit is Spades
-                CardSuits[CurrentCard] = "Spades";
-            }
-            else if (CardGenerator >= 4 && CardGenerator < 8)
-            {
-                //Suit is Clubs
-                CardSuits[CurrentCard] = "Clubs";
-            }
-            else if (CardGenerator >= 8 && CardGenerator < 12)
-            {
-                //Suit is Hearts
-                CardSuits[CurrentCard] = "Hearts";
-            }
-            else if (CardGenerator >= 12)
-            {
-                //Suit is Diamonds
-                CardSuits[CurrentCard] = "Diamond";
-            }
-
+            var splitted = value.Split(' ');
+            CardSuits.Add(splitted[splitted.Length - 1]);
             CurrentCard++;
             CardsLeft--;
         }
@@ -369,6 +357,7 @@ public class Krit4CardMonte : MonoBehaviour
                 if (BombInfo.GetSolvedModuleNames().Count() >= 5)
                 {
                     Debug.Log("Current bomb time: " + (int)BombInfo.GetTime() + ". Below half? " + ((int)BombInfo.GetTime() == InitialTimer));
+                    DealTimer = BombInfo.GetTime();
                     if (!DealAgain)
                     {
                         DealBtn.gameObject.SetActive(false);
@@ -400,6 +389,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else
             {
+                DealTimer = BombInfo.GetTime();
                 if (!DealAgain)
                 {
                     DealBtn.gameObject.SetActive(false);
@@ -578,10 +568,10 @@ public class Krit4CardMonte : MonoBehaviour
         }
 
         Debug.LogFormat("[Four-Card Monte #{0}] Your hand: {1}", ModuleID, CardCombo);
-        FlowchartCalculation();
+        FlowchartCalculation(false);
     }
 
-    void FlowchartCalculation()
+    void FlowchartCalculation(bool newcheck)
     {
         AllIndicators = string.Join("", BombInfo.GetIndicators().ToArray());
         //Flowchart: Four-Card Deluxe and Three of a suit
@@ -699,9 +689,9 @@ public class Krit4CardMonte : MonoBehaviour
         {
             if (AllModules.Any(x => Royal_FlushModules.Any(y => y == x)))
             {
-                if (AllModules.Any(x => x.Contains("Poker")))
+                if (AllModules.Any(x => x.Equals("Poker")))
                 {
-                    if (AllModules.Any(x => x.Contains("Modulo")))
+                    if (AllModules.Any(x => x.Equals("Modulo")))
                     {
                         CorrectCard = 1;
                     }
@@ -712,7 +702,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    if (AllModules.Any(x => x.Contains("British Slang")))
+                    if (AllModules.Any(x => x.Equals("British Slang")))
                     {
                         CorrectCard = 3;
                     }
@@ -726,7 +716,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 if (BombInfo.GetSolvedModuleNames().Count() > 7)
                 {
-                    if (AllModules.Any(x => x.Contains("Flip The Coin")))
+                    if (AllModules.Any(x => x.Equals("Flip The Coin")))
                     {
                         CorrectCard = 1;
                     }
@@ -737,7 +727,7 @@ public class Krit4CardMonte : MonoBehaviour
                 }
                 else
                 {
-                    if (AllModules.Any(x => x.Contains("Blackjack")))
+                    if (AllModules.Any(x => x.Equals("Blackjack")))
                     {
                         CorrectCard = 3;
                     }
@@ -809,7 +799,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             if (BombInfo.GetSolvedModuleNames().Count() > BombInfo.GetSolvableModuleNames().Count() / 2)
             {
-                if (BombInfo.GetTime() < InitialTimer / 2)
+                if (DealTimer < InitialTimer / 2)
                 {
                     if (AllCoinValues[CorrectCoin - 1] == 1)
                     {
@@ -913,7 +903,16 @@ public class Krit4CardMonte : MonoBehaviour
                 }
             }
         }
-        Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1}", ModuleID, CorrectCard);
+        if (newcheck)
+            Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1} (At time of card flip)", ModuleID, CorrectCard);
+        else if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1} (At time of card generation)", ModuleID, CorrectCard);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] The correct card is {1}", ModuleID, CorrectCard);
+        }
     }
 
     void CorrectCoinCalculation()
@@ -924,7 +923,7 @@ public class Krit4CardMonte : MonoBehaviour
             Rule = "First card is Ace of Spades and BOB is lit";
             CorrectCoin = 1;
         }
-        if (CardValues[3] == "Jack Of Clubs" && AllCoinColors.Where(x => x.Contains("Red")).Count() > 1)
+        else if (CardValues[3] == "Jack Of Clubs" && AllCoinColors.Where(x => x.Contains("Red")).Count() > 1)
         {
             Rule = "Last card is Jack Of Clubs and 2-4 red coins";
             CorrectCoin = 4;
@@ -1250,6 +1249,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[0].material.mainTexture;
             if (!DealAgain)
             {
                 Debug.LogFormat("[Four-Card Monte #{0}] Bet accepted. Shuffling...", ModuleID);
@@ -1278,6 +1278,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[1].material.mainTexture;
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
@@ -1306,6 +1307,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[2].material.mainTexture;
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
@@ -1334,6 +1336,7 @@ public class Krit4CardMonte : MonoBehaviour
         {
             Coins.SetActive(false);
             StartCoroutine("ShuffleText");
+            InfoCoin.material.mainTexture = AllCoins[3].material.mainTexture;
             if (!DealAgain)
             {
                 StartCoroutine("FlipCard1");
@@ -1931,6 +1934,7 @@ public class Krit4CardMonte : MonoBehaviour
                 CardHighlight2.SetActive(true);
                 CardHighlight3.SetActive(true);
                 CardHighlight4.SetActive(true);
+                EnableCardPresses = true;
                 CardHighlight1.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight2.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight3.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -1984,6 +1988,7 @@ public class Krit4CardMonte : MonoBehaviour
                 CardHighlight2.SetActive(true);
                 CardHighlight3.SetActive(true);
                 CardHighlight4.SetActive(true);
+                EnableCardPresses = true;
                 CardHighlight1.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight2.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight3.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -2037,6 +2042,7 @@ public class Krit4CardMonte : MonoBehaviour
                 CardHighlight2.SetActive(true);
                 CardHighlight3.SetActive(true);
                 CardHighlight4.SetActive(true);
+                EnableCardPresses = true;
                 CardHighlight1.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight2.transform.localEulerAngles = new Vector3(0, 180, 0);
                 CardHighlight3.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -2058,8 +2064,18 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool Card1()
     {
+        if(!EnableCardPresses)
+            return false;
         Card1Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 1, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2078,8 +2094,18 @@ public class Krit4CardMonte : MonoBehaviour
     }
     protected bool Card2()
     {
+        if(!EnableCardPresses)
+            return false;
         Card2Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 2, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2098,8 +2124,18 @@ public class Krit4CardMonte : MonoBehaviour
     }
     protected bool Card3()
     {
+        if(!EnableCardPresses)
+            return false;
         Card3Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 3, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2118,8 +2154,18 @@ public class Krit4CardMonte : MonoBehaviour
     }
     protected bool Card4()
     {
+        if(!EnableCardPresses)
+            return false;
         Card4Sel.AddInteractionPunch();
-        Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
+        if (CardCombo == "Total Trash" || CardCombo == "Lucky Love" || CardCombo == "Dual Pairs" || CardCombo == "Kingdom Combo" || CardCombo == "Royalty Rush")
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4", ModuleID);
+            FlowchartCalculation(true);
+        }
+        else
+        {
+            Debug.LogFormat("[Four-Card Monte #{0}] Card flipped: 4, Desired: {1}", ModuleID, CorrectCard);
+        }
         Card1Sel.OnInteract = InactiveCard;
         Card2Sel.OnInteract = InactiveCard;
         Card3Sel.OnInteract = InactiveCard;
@@ -2155,6 +2201,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard2Anim");
                 StartCoroutine("ShowCard3Anim");
                 StartCoroutine("ShowCard4Anim");
@@ -2182,6 +2229,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard1Anim");
                 StartCoroutine("ShowCard3Anim");
                 StartCoroutine("ShowCard4Anim");
@@ -2209,6 +2257,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard1Anim");
                 StartCoroutine("ShowCard2Anim");
                 StartCoroutine("ShowCard4Anim");
@@ -2236,6 +2285,7 @@ public class Krit4CardMonte : MonoBehaviour
             {
                 StatusText.text = "Congratulations!";
                 StatusText.color = Color.green;
+                EnableCardPresses = false;
                 StartCoroutine("ShowCard1Anim");
                 StartCoroutine("ShowCard2Anim");
                 StartCoroutine("ShowCard3Anim");
@@ -2277,6 +2327,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 ShowFrame = 0;
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
@@ -2309,6 +2360,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 ShowFrame = 0;
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
@@ -2341,6 +2393,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 ShowFrame = 0;
                 GetComponent<KMBombModule>().HandleStrike();
                 StartCoroutine("ReturnCard1");
@@ -2373,6 +2426,7 @@ public class Krit4CardMonte : MonoBehaviour
             }
             else if (ShowFrame == 3)
             {
+                EnableCardPresses = false;
                 Card1Sel.Highlight.gameObject.SetActive(true);
                 Card2Sel.Highlight.gameObject.SetActive(true);
                 Card3Sel.Highlight.gameObject.SetActive(true);
@@ -3158,6 +3212,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool PayDevKeySubmitPress()
     {
+        if (_solved) return false;
         PayDevKeySubmit.AddInteractionPunch();
         int EnteredDollars = int.Parse(Dollars);
         int EnteredCent1 = int.Parse(Cents.Substring(0, 1));
@@ -3166,7 +3221,7 @@ public class Krit4CardMonte : MonoBehaviour
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Dollars is ${1}", ModuleID, EnteredDollars);
         Debug.LogFormat("[Four-Card Monte #{0}] Submitted Cents are $0.{1}{2}", ModuleID, EnteredCent1, EnteredCent2);
 
-        if (BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point Of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point Of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")))
+        if (BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Silly Slots")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Silly Slots")) && BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Poker")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Poker")) && BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Point of Order")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Point of Order")) && BombInfo.GetSolvableModuleNames().Count(x => x.Equals("Blackjack")) == BombInfo.GetSolvedModuleNames().Count(x => x.Equals("Blackjack")))
         {
             if (EnteredDollars == DesiredDollars)
             {
@@ -3183,8 +3238,9 @@ public class Krit4CardMonte : MonoBehaviour
                         VictoryMessage.text = VictoryMessages[RandomMessage - 1];
                         StartCoroutine("CorrectPayment");
                         StartCoroutine("TicketDispensing");
-                        TicketPrinting.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
-                        TicketPrinting.PlaySoundAtTransform("TicketPrinting", transform);
+                        SolveSound.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
+                        TicketPrinting.Play();
+                        _solved = true;
                         GetComponent<KMBombModule>().HandlePass();
                     }
                     else
@@ -3210,8 +3266,8 @@ public class Krit4CardMonte : MonoBehaviour
         }
         else
         {
-            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvableModuleNames().Count(x => x.Contains("Point Of Order"));
-            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Silly Slots")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Poker")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Blackjack")) + BombInfo.GetSolvedModuleNames().Count(x => x.Contains("Point Of Order"));
+            int SolvableCasinoModules = BombInfo.GetSolvableModuleNames().Count(x => x == "Silly Slots") + BombInfo.GetSolvableModuleNames().Count(x => x == "Poker") + BombInfo.GetSolvableModuleNames().Count(x => x == "Blackjack") + BombInfo.GetSolvableModuleNames().Count(x => x == "Point of Order");
+            int SolvedCasinoModules = BombInfo.GetSolvedModuleNames().Count(x => x == "Silly Slots") + BombInfo.GetSolvedModuleNames().Count(x => x == "Poker") + BombInfo.GetSolvedModuleNames().Count(x => x == "Blackjack") + BombInfo.GetSolvedModuleNames().Count(x => x == "Point of Order");
             Debug.LogFormat("<Four-Card Monte {0}> Solvable casino modules: {1}, Solved casino modules: {2}", ModuleID, SolvableCasinoModules, SolvedCasinoModules);
             Debug.LogFormat("[Four-Card Monte #{0}] Cannot deal now: There is still an unsolved casino module.", ModuleID);
             StartCoroutine("CannotSendNow");
@@ -3222,6 +3278,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     IEnumerator WrongPayment()
     {
+        InfoCoin.gameObject.SetActive(true);
         for (int T = 0; T < 3; T++)
         {
             if (T == 0)
@@ -3318,6 +3375,7 @@ public class Krit4CardMonte : MonoBehaviour
 
     protected bool ShutdownSequence()
     {
+        if (_solved) return false;
         int RandomMessage = Random.Range(0, 5);
         PayDevKeyShutdown.AddInteractionPunch();
         Debug.LogFormat("[Four-Card Monte] Pressed the power button. {1} Strike handed.", ModuleID, ShutdownMessages[RandomMessage]);
